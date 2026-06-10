@@ -68,10 +68,17 @@ def check(url: str) -> dict:
                 "hint": "dead URL — the feed moved or never existed at this path"}
     n = len(feed.entries)
     if n == 0:
-        # bozo + no entries usually means "not a feed" or down
-        reason = "not-a-feed" if getattr(feed, "bozo", 0) else "empty"
-        return {"url": url, "status": reason,
-                "bozo": str(getattr(feed, "bozo_exception", "") or "")[:120]}
+        bozo_exc = str(getattr(feed, "bozo_exception", "") or "")
+        if getattr(feed, "bozo", 0):
+            low = bozo_exc.lower()
+            # DNS / connection / TLS failures surface as a bozo urlopen error with
+            # no HTTP status — report those as unreachable, not "not a feed".
+            if any(k in low for k in ("urlopen error", "nodename", "name or service",
+                                      "getaddrinfo", "connection refused", "timed out",
+                                      "ssl", "certificate")):
+                return {"url": url, "status": "unreachable", "error": bozo_exc[:160]}
+            return {"url": url, "status": "not-a-feed", "bozo": bozo_exc[:120]}
+        return {"url": url, "status": "empty"}
     ld = latest_date(feed)
     stale = bool(ld and (datetime.now(timezone.utc) - ld).days > 30)
     return {
@@ -103,7 +110,10 @@ def load_active_sources():
     if not cfg.exists():
         cfg = CONFIG / "feeds.default.yaml"
     data = yaml.safe_load(cfg.read_text()) or {}
-    return [(s.get("name"), s["url"]) for s in data.get("sources", [])]
+    # Only RSS sources have a `url`; skip `type: email` (and any url-less) entries
+    # so `--all` never KeyErrors once the user has added email newsletters.
+    return [(s.get("name"), s["url"]) for s in data.get("sources", [])
+            if s.get("type", "rss") == "rss" and "url" in s]
 
 
 def main():
