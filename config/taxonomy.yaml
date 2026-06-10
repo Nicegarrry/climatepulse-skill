@@ -1,0 +1,31 @@
+# Editable taxonomy for tagging. Kept deliberately small and generic — extend
+# to taste. The skill assigns exactly one `domain` and one `signal_type` per
+# kept article, plus free-form entities.
+
+domains:
+  - solar
+  - wind
+  - grid-and-storage
+  - ev-and-transport
+  - hydrogen-and-fuels
+  - policy-and-regulation
+  - carbon-markets
+  - climate-finance-esg
+  - heavy-industry
+  - nature-and-land
+  - adaptation-and-risk
+  - climate-science
+
+signal_types:
+  - deal-or-investment      # funding rounds, M&A, project finance
+  - policy-or-regulation    # laws, rules, rulings, targets
+  - project-milestone       # FID, construction, commissioning, output
+  - technology-breakthrough # R&D, efficiency, new capability
+  - market-move             # prices, supply/demand, commodities
+  - corporate-action        # company strategy, earnings, layoffs
+  - research-finding        # studies, data releases, reports
+  - controversy-or-risk     # disputes, failures, accountability
+
+sentiments: [positive, neutral, negative]
+
+entity_types: [company, person, policy, project, technology, jurisdiction, organisation]

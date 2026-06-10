@@ -1,0 +1,14 @@
+# Transient — rebuilt every run
+state/new_items.json
+
+# Generated artifact — rebuild with build_dashboard.py
+wiki/dashboard.html
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# NOTE: state/seen.json, state/profile.md, state/learning.md, state/source_stats.json
+# and wiki/digests + wiki/articles are intentionally committed — they ARE the
+# memory and product, and the run environment is ephemeral.

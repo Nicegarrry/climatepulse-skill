@@ -1,0 +1,123 @@
+# ── Shipped starter sources for climate-digest ───────────────────────────────
+# Curation goals:
+#   • Broad coverage of the taxonomy domains without drowning in volume (~14 feeds).
+#   • All KEYLESS public RSS/Atom — no API keys, no auth.
+#   • A small `core: true` set kept by onboarding REGARDLESS of sector filters,
+#     so the digest is never empty even for a narrow profile.
+#   • Geographic spread (US + EU + AU + global/Asia), not just US.
+#   • `tier`: 1 = high signal / low noise, 2 = useful but higher volume.
+#   • `tags` drive onboarding's tailoring (kept if they overlap chosen sectors).
+#
+# These URLs are a curated PROPOSAL. On first run, onboarding runs
+# `validate_feeds.py --all` and reports any that are dead / moved / blocked, so
+# the list is verified on first real contact rather than trusted blindly.
+# (If many show `blocked`, your run environment's network allowlist is the cause,
+#  not the feeds — see the network note in README.)
+
+defaults:
+  max_article_age_days: 7   # skip items older than this (mirrors the production poller)
+  per_feed_limit: 40        # cap entries read per feed per run
+
+sources:
+  # ── Cross-cutting news / policy / science ───────────────────────────────────
+  - name: Carbon Brief
+    url: https://www.carbonbrief.org/feed/
+    tags: [policy, science, global]
+    tier: 1
+    core: true
+    lang: en
+  - name: Inside Climate News
+    url: https://insideclimatenews.org/feed/
+    tags: [policy, accountability, us, global]
+    tier: 1
+    core: true
+    lang: en
+  - name: The Guardian — Environment
+    url: https://www.theguardian.com/environment/rss
+    tags: [news, policy, global]
+    tier: 1
+    core: true
+    lang: en
+  - name: Grist
+    url: https://grist.org/feed/
+    tags: [news, policy, justice, us]
+    tier: 2
+    lang: en
+  - name: Yale Environment 360
+    url: https://e360.yale.edu/feed.xml
+    tags: [science, nature, global]
+    tier: 1
+    lang: en
+
+  # ── Energy verticals (solar / wind / grid / storage) ────────────────────────
+  - name: Canary Media
+    url: https://www.canarymedia.com/articles.rss
+    tags: [grid, storage, solar, wind, us]
+    tier: 1
+    core: true
+    lang: en
+  - name: CleanTechnica
+    url: https://cleantechnica.com/feed/
+    tags: [solar, ev, transport, industry]
+    tier: 2
+    lang: en
+  - name: PV Magazine
+    url: https://www.pv-magazine.com/feed/
+    tags: [solar, storage, global]
+    tier: 2
+    lang: en
+  - name: Utility Dive
+    url: https://www.utilitydive.com/feeds/news/
+    tags: [grid, utilities, policy, us]
+    tier: 2
+    lang: en
+
+  # ── Transport / EV ──────────────────────────────────────────────────────────
+  - name: Electrek
+    url: https://electrek.co/feed/
+    tags: [ev, transport, solar]
+    tier: 2
+    lang: en
+
+  # ── Geographic anchors beyond the US ────────────────────────────────────────
+  - name: RenewEconomy (AU)
+    url: https://reneweconomy.com.au/feed/
+    tags: [solar, wind, grid, policy, australia]
+    tier: 1
+    core: true
+    lang: en
+  # Top-level Euractiv feed: the old /sections/energy-environment/feed/ path 404s.
+  # This one is broader (all sections) and higher-volume; scoring + the profile
+  # filter keep it on-topic.
+  - name: Euractiv (EU)
+    url: https://www.euractiv.com/feed/
+    tags: [policy, eu, global]
+    tier: 2
+    lang: en
+  - name: Dialogue Earth (Asia / global south)
+    url: https://dialogue.earth/en/feed/
+    tags: [policy, nature, asia, global]
+    tier: 2
+    lang: en
+
+  # ── Accountability / finance ────────────────────────────────────────────────
+  # NOTE: DeSmog sits behind Cloudflare and often returns HTTP 403 from cloud/CI
+  # IPs (validator reports `blocked`). It works from a residential IP. Keep it for
+  # local runs; drop it if your scheduled environment can't reach it.
+  - name: DeSmog
+    url: https://www.desmog.com/feed/
+    tags: [policy, accountability, finance, global]
+    tier: 2
+    lang: en
+
+  # ── Email newsletters (type: email) ─────────────────────────────────────────
+  # Added by onboarding only if the user opts in AND has Gmail connected in
+  # Claude. `query` is a Gmail search string (not a URL); collected by the skill
+  # via the Gmail MCP tools, not fetch_feeds.py. Email items stay PRIVATE — never
+  # contributed to a shared pool. Example shape:
+  #
+  # - name: Carbon Brief Daily (email)
+  #   type: email
+  #   query: "from:(daily@carbonbrief.org) newer_than:2d"
+  #   tags: [policy, science, global]
+  #   tier: 1
