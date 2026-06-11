@@ -26,7 +26,7 @@ significance: 78                     # 0–100
 why_it_matters: One-sentence reason this is on the radar today.
 ---
 
-Two to four sentences of summary, written for a practitioner skimming at 6am.
+One to two sentences of summary, written for a practitioner skimming at 6am.
 Link out only via the `url` field above, not inline.
 ```
 

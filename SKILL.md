@@ -154,18 +154,25 @@ digest uses; more does not improve quality.
 
 For each kept item, write `wiki/articles/<YYYY>/<YYYY-MM-DD>/<slug>.md` using the
 frontmatter schema in `docs/SCHEMA.md`. `<slug>` = a short kebab-case from the
-title. Never overwrite an existing record.
+title. Keep the body to **1–2 sentences** (the YAML frontmatter is the record;
+the body is just a skim line). Never overwrite an existing record.
 
 ## Step 5 — Synthesise the digest (LLM)
 
 Write `wiki/digests/<YYYY-MM-DD>.md` with:
 - **Daily Number** — one quantitative anchor pulled from today's stories.
-- **Narrative** — a short opening paragraph tying the day together.
-- **Hero stories** (2–4) — fuller treatment; link to their article records.
-- **Compact list** — one-liners for the rest, each linking its record.
-- **Connections** — any callout where two stories interact.
+- **Narrative** — 2–3 sentences tying the day together. Not a long paragraph.
+- **Hero stories** (2–4) — **2–3 tight sentences each**: what happened, then why
+  it matters to this profile. No padding, no restating the headline. Lead each
+  with the source as a markdown link to the article, e.g.
+  `**[RenewEconomy](https://…)** — …`, so the reader can click through to the source.
+- **Compact list** — one line each: headline + a single clause on why it matters,
+  with the source as a `[name](url)` link.
+- **Connections** — at most 1–2 short callouts where stories interact.
 
-Match the depth to the `digest_length` preference in `profile.md`.
+Keep it lean — built for a 6am skim, not an essay. Every story must carry a
+clickable source link. Match overall length to the `digest_length` preference in
+`profile.md` (tight = fewer stories and shorter prose).
 
 ## Step 6 — Update the index
 

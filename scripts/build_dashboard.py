@@ -58,6 +58,7 @@ border:1px solid var(--border);border-radius:20px;background:var(--surface);curs
 .row h4{margin:0 0 4px;font:600 15px/1.35 Georgia,serif}
 .row h4 a{color:var(--ink);text-decoration:none}.row h4 a:hover{color:var(--forest)}
 .row .meta{font-size:12px;color:var(--ink-muted)}
+.row .meta a{color:var(--forest);text-decoration:none}.row .meta a:hover{text-decoration:underline}
 .row .why{font-size:13px;color:var(--ink-sec);margin-top:4px}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--plum);margin-left:6px;vertical-align:middle}
 .arc a{display:block;padding:10px 0;border-bottom:1px solid var(--border);color:var(--ink);text-decoration:none}
@@ -131,7 +132,7 @@ def main():
         rows.append(f"""<div class="row" data-d="{html.escape(str(r.get('domain','other')))}">
   <div class="score">{int(r.get('significance',0) or 0)}</div>
   <div><h4><a href="{html.escape(r.get('url','#'))}">{html.escape(r.get('title','(untitled)'))}</a>{urgent}</h4>
-  <div class="meta">{html.escape(str(r.get('source','')))} · {html.escape(str(r.get('domain','')))} · {html.escape(str(r.get('signal_type','')))}</div>
+  <div class="meta"><a href="{html.escape(r.get('url','#'))}">{html.escape(str(r.get('source','')))}</a> · {html.escape(str(r.get('domain','')))} · {html.escape(str(r.get('signal_type','')))}</div>
   <div class="why">{html.escape(str(r.get('why_it_matters','')))}</div></div></div>""")
 
     chips = '<span class="chip active" data-d="all" onclick="filt(\'all\')">all</span>' + "".join(
