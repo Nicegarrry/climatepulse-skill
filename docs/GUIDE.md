@@ -89,6 +89,13 @@ A **local run** (residential IP) is most permissive. For a **cloud Routine/CI**,
 widen the network policy to allow the news domains, or run locally. Sanity-check
 with one `validate_feeds.py <known-good-url>` before suspecting the source list.
 
+**Running inside the Claude web / desktop app?** That sandbox blocks *all*
+outbound network from code, so `fetch_feeds.py` will report every feed `blocked`
+— expected, not a bug. There, the agent fetches the feeds with its own web-fetch
+tools and normalises them via `scripts/ingest_fetched.py` (SKILL.md Step 2,
+path B); the rest of the pipeline runs unchanged in the sandbox. Claude Code
+(local) runs the Python fetch directly (path A).
+
 ## Scheduling (pick one)
 
 - **Claude Code Routine (web)** — attach a daily schedule trigger; runs

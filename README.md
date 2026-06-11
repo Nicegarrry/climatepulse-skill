@@ -14,9 +14,11 @@ sustainability news digest into a local Markdown wiki — no database, no server
   `.claude/skills/climatepulse/` (rename it to `climatepulse` if it unzipped as
   `climatepulse-skill`), then `pip install -r scripts/requirements.txt`. Invoke
   with `/climatepulse`.
-- **Runs in Claude Code only.** It fetches live RSS, and the Claude desktop/web app
-  runs skills in a sandbox with no outbound internet — so uploading this as a
-  desktop-app skill installs but can't fetch. Use the local Claude Code CLI.
+- **Where it runs — both.** In **Claude Code** the bundled Python does the fetch
+  (full local network). In the **Claude web / desktop app** the code sandbox has no
+  outbound network, so the agent fetches the feeds with its own web tools and folds
+  them in via `scripts/ingest_fetched.py` (SKILL.md Step 2 has the branch). So a
+  desktop-app skill upload works too.
 - **Extras** — `python3 scripts/build_dashboard.py` renders a simple static
   dashboard (Briefing / Newsroom / Archive); add Gmail newsletters as sources if
   Gmail is connected in Claude.

@@ -77,7 +77,12 @@ If `state/feedback.md` has new content: reconcile it into `state/profile.md`
 (adjust interests/sources), record what changed in `state/learning.md`, then
 clear `feedback.md` (truncate to an empty `# Feedback` header).
 
-## Step 2 — Collect (deterministic)
+## Step 2 — Collect (how depends on the environment)
+
+Both paths end with the same `state/new_items.json`; pick by where you're running.
+
+**A. Claude Code (local) — run the deterministic fetcher.** You have a full shell
+and outbound network:
 
 ```
 python3 scripts/fetch_feeds.py --fulltext
@@ -85,10 +90,33 @@ python3 scripts/fetch_feeds.py --fulltext
 
 This reads `config/feeds.yaml` (or `feeds.default.yaml`), drops anything already
 in `state/seen.json`, applies the age cutoff, and writes new items to
-`state/new_items.json`. It does **not** mark items seen yet.
+`state/new_items.json`. If `--fulltext` errors (trafilatura missing), rerun
+without it — RSS summaries are an acceptable fallback.
 
-If `--fulltext` errors (trafilatura missing), rerun without it — RSS summaries
-are an acceptable fallback.
+**B. Claude web / desktop app (sandboxed) — fetch the feeds yourself.** The code
+sandbox here has **no outbound network**, so `fetch_feeds.py` can't reach the
+publishers — but **your own web-fetch / web-search tools can.** So:
+
+1. Read the RSS source URLs from `config/feeds.yaml` (or `feeds.default.yaml`);
+   skip `type: email` entries.
+2. For each source, use your web-fetch tool to retrieve the feed URL and read its
+   recent items (title, link, published date, summary). Stay within the
+   `max_article_age_days` cutoff from the `defaults:` block.
+3. Assemble them as a JSON array — one object per item, shape
+   `{url, title, source, source_tags, published_at, text}` (`source` /
+   `source_tags` come from that feed's config entry) — and write it to
+   `state/rss_raw.json`.
+4. Normalise + dedup into the standard shape (no network needed):
+   ```
+   python3 scripts/ingest_fetched.py state/rss_raw.json
+   ```
+   This computes the same `id` / `title_hash`, drops anything already in
+   `state/seen.json`, and writes `state/new_items.json` exactly like
+   `fetch_feeds.py` would. Delete `state/rss_raw.json` afterwards.
+
+Neither path marks items seen yet (Step 7 does). From here the run is **identical
+in both environments** — Steps 3–7 only read and write local files and need no
+network, so they execute fine in the sandbox too.
 
 ## Step 2b — Collect from email sources (if any)
 
