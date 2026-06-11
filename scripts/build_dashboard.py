@@ -25,43 +25,58 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 WIKI = ROOT / "wiki"
 
-# Editorial palette echoing the production dashboard (sage / forest / ink).
+# ClimatePulse editorial design language — exact tokens from the app's globals.css
+# (warm paper / forest / sage-tint / plum / amber, Crimson Pro display serif +
+# Source Sans 3 + JetBrains Mono, editorial 4-8px radii). Web fonts load from
+# Google Fonts with serif/sans/mono fallbacks so it still renders offline.
 CSS = """
-:root{--bg:#f6f5f0;--surface:#fffdf8;--border:#e3e0d6;--ink:#23271f;
---ink-sec:#5a6152;--ink-muted:#8b9082;--forest:#2f5d45;--sage:#e8efe6;--plum:#7a4b6b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
-font:15px/1.55 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{
+--bg:#FAF9F7;--surface:#FFFFFF;--paper-dark:#F5F3F0;
+--border:#E8E5E0;--border-light:#F0EEEA;
+--ink:#1A1A1A;--ink-sec:#5C5C5C;--ink-muted:#8C8C8C;--ink-faint:#B3B3B3;
+--forest:#1E4D2B;--forest-mid:#4A7C59;--sage:#94A88A;--sage-tint:#EFF4EC;
+--plum:#3D1F3D;--plum-light:#F5EEF5;--amber:#B8860B;
+--sans:'Source Sans 3',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+--serif:'Crimson Pro',Georgia,'Times New Roman',serif;
+--mono:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
 .app{display:flex;min-height:100vh}
-nav{width:170px;flex-shrink:0;border-right:1px solid var(--border);padding:22px 12px;
-position:sticky;top:0;height:100vh}
-nav .logo{font:600 17px/1 Georgia,serif;color:var(--forest);margin:0 8px 22px}
-nav button{display:block;width:100%;text-align:left;border:0;background:none;
-padding:8px 10px;margin-bottom:2px;border-radius:6px;cursor:pointer;color:var(--ink-sec);
-font-size:13px}
-nav button.active{background:var(--sage);color:var(--forest);font-weight:600}
-main{flex:1;max-width:860px;margin:0 auto;padding:34px 28px 80px}
-h1{font:600 26px/1.2 Georgia,serif;margin:0 0 4px}
-.sub{color:var(--ink-muted);font-size:13px;margin-bottom:26px}
-.daily-number{background:var(--forest);color:#fff;border-radius:12px;padding:20px 24px;margin:0 0 26px}
-.daily-number .v{font:700 30px/1 Georgia,serif}
-.daily-number .l{opacity:.85;font-size:13px;margin-top:6px}
+nav{width:190px;flex-shrink:0;background:var(--bg);border-right:1px solid var(--border);padding:26px 14px;position:sticky;top:0;height:100vh}
+nav .logo{font:600 20px/1.1 var(--serif);color:var(--forest);letter-spacing:-.01em;margin:0 8px 28px;display:block}
+nav button{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 12px;margin-bottom:3px;border-radius:6px;cursor:pointer;color:var(--ink-sec);font:500 14px/1 var(--sans)}
+nav button:hover{background:var(--paper-dark);color:var(--ink)}
+nav button.active{background:var(--sage-tint);color:var(--forest);font-weight:600}
+main{flex:1;max-width:880px;margin:0 auto;padding:40px 36px 90px}
+h1{font:600 34px/1.15 var(--serif);letter-spacing:-.015em;margin:0 0 6px}
+.sub{color:var(--ink-muted);font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:30px}
+.daily-number{position:relative;background:var(--forest);color:#fff;border-radius:8px;padding:24px 28px;margin:0 0 32px;overflow:hidden}
+.daily-number:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--amber)}
+.daily-number .v{font:600 40px/1.05 var(--serif)}
+.daily-number .l{opacity:.85;font-size:14px;line-height:1.5;margin-top:8px;max-width:62ch}
 .tab{display:none}.tab.active{display:block}
-.md h2{font:600 18px/1.3 Georgia,serif;margin:28px 0 8px}
-.md h3{font-size:15px;margin:20px 0 6px}
-.md a{color:var(--forest)}.md p{margin:8px 0}.md ul{padding-left:20px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px}
-.chip{font-size:11px;text-transform:lowercase;letter-spacing:.03em;padding:4px 10px;
-border:1px solid var(--border);border-radius:20px;background:var(--surface);cursor:pointer;color:var(--ink-sec)}
+.md .kicker{color:var(--ink-muted);font:500 12px/1.5 var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:0 0 26px}
+.md h2{font:600 23px/1.25 var(--serif);letter-spacing:-.01em;margin:34px 0 10px;padding-top:20px;border-top:1px solid var(--border-light)}
+.md h3{font:600 17px/1.3 var(--serif);margin:24px 0 6px}
+.md p{margin:10px 0;color:var(--ink-sec)}
+.md strong{color:var(--ink);font-weight:600}
+.md a{color:var(--forest);text-decoration:none;border-bottom:1px solid var(--sage)}
+.md a:hover{background:var(--sage-tint)}
+.md ul{padding-left:20px}.md li{margin:8px 0;color:var(--ink-sec)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
+.chip{font:500 11px/1 var(--mono);text-transform:lowercase;letter-spacing:.02em;padding:6px 11px;border:1px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;color:var(--ink-sec)}
+.chip:hover{border-color:var(--sage)}
 .chip.active{background:var(--forest);color:#fff;border-color:var(--forest)}
-.row{border-bottom:1px solid var(--border);padding:14px 0;display:flex;gap:14px}
-.row .score{font:700 13px/1 ui-monospace,monospace;color:var(--forest);width:30px;flex-shrink:0;padding-top:2px}
-.row h4{margin:0 0 4px;font:600 15px/1.35 Georgia,serif}
+.row{border-bottom:1px solid var(--border-light);padding:16px 0;display:flex;gap:16px}
+.row .score{font:600 13px/1 var(--mono);color:var(--forest);width:32px;flex-shrink:0;padding-top:3px}
+.row h4{margin:0 0 4px;font:600 16px/1.35 var(--serif)}
 .row h4 a{color:var(--ink);text-decoration:none}.row h4 a:hover{color:var(--forest)}
-.row .meta{font-size:12px;color:var(--ink-muted)}
+.row .meta{font:500 11px/1.4 var(--mono);color:var(--ink-muted);text-transform:uppercase;letter-spacing:.03em}
 .row .meta a{color:var(--forest);text-decoration:none}.row .meta a:hover{text-decoration:underline}
-.row .why{font-size:13px;color:var(--ink-sec);margin-top:4px}
-.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--plum);margin-left:6px;vertical-align:middle}
-.arc a{display:block;padding:10px 0;border-bottom:1px solid var(--border);color:var(--ink);text-decoration:none}
+.row .why{font-size:14px;color:var(--ink-sec);margin-top:5px}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amber);margin-left:7px;vertical-align:middle}
+.arc a{display:block;padding:12px 0;border-bottom:1px solid var(--border-light);color:var(--ink);text-decoration:none;font:500 15px/1 var(--mono)}
 .arc a:hover{color:var(--forest)}
 """
 
@@ -86,6 +101,9 @@ def md_to_html(md: str) -> str:
             out.append(f"<h2>{inline(line[3:])}</h2>")
         elif line.startswith("# "):
             continue  # page already has its own H1
+        elif line.startswith("> "):
+            if in_ul: out.append("</ul>"); in_ul = False
+            out.append(f'<p class="kicker">{inline(line[2:])}</p>')
         elif line.startswith(("- ", "* ")):
             if not in_ul: out.append("<ul>"); in_ul = True
             out.append(f"<li>{inline(line[2:])}</li>")
