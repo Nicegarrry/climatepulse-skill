@@ -1,4 +1,4 @@
-# climate-digest — guide
+# climatepulse — guide
 
 A single-user replica of the ClimatePulse daily pipeline, packaged as one Claude
 skill: fetch climate/energy/sustainability news → tag & score → synthesise a
@@ -17,14 +17,14 @@ pip install -r scripts/requirements.txt
 
 ## First run — onboarding (interactive, once)
 
-In Claude Code: `/climate-digest`. With no `state/profile.md` present, the skill
+In Claude Code: `/climatepulse`. With no `state/profile.md` present, the skill
 runs `onboarding.md`: a short interview that tailors your sources into
 `config/feeds.yaml` and writes your profile. This is the only step needing a
 human.
 
 ## Daily run
 
-`/climate-digest` collects new items, scores them against your profile, writes
+`/climatepulse` collects new items, scores them against your profile, writes
 the briefing to `wiki/digests/<date>.md` and records to `wiki/articles/...`,
 updates `wiki/index.md`, and appends a learning reflection.
 
@@ -93,9 +93,9 @@ with one `validate_feeds.py <known-good-url>` before suspecting the source list.
 
 - **Claude Code Routine (web)** — attach a daily schedule trigger; runs
   unattended on Anthropic infra, survives reboots. Easiest.
-- **GitHub Actions** — a `schedule:` workflow running `claude -p "/climate-digest"`,
+- **GitHub Actions** — a `schedule:` workflow running `claude -p "/climatepulse"`,
   committing the wiki. Free managed cron.
-- **System cron / launchd** — `claude -p "/climate-digest"` each morning.
+- **System cron / launchd** — `claude -p "/climatepulse"` each morning.
 
 `/loop` is *not* suitable — it only runs while a session stays open.
 

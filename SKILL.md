@@ -1,5 +1,5 @@
 ---
-name: climate-digest
+name: climatepulse
 description: >-
   Generate a personalised daily climate / energy / sustainability intelligence
   digest into a local Markdown wiki. Fetches configured RSS sources
@@ -7,11 +7,11 @@ description: >-
   dated briefing plus structured per-article records. Runs a one-time onboarding
   to tailor sources, and self-tunes from feedback over time. Use when the user
   asks to run the daily climate digest / morning brief, set it up, or invokes
-  "/climate-digest".
+  "/climatepulse".
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
 ---
 
-# climate-digest
+# climatepulse
 
 A single-user replica of the ClimatePulse daily pipeline, collapsed into one
 skill. It produces a morning intelligence digest over climate / energy /
@@ -37,7 +37,7 @@ Three principles, lifted from the production system:
 ## Layout
 
 ```
-.claude/skills/climate-digest/
+.claude/skills/climatepulse/
 ├── SKILL.md              ← this runbook
 ├── onboarding.md         ← first-run-only sub-prompt (tailors sources)
 ├── config/

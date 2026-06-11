@@ -161,7 +161,7 @@ def main():
 
     page = f"""<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>climate-digest · {latest_date}</title><style>{CSS}</style></head><body>
+<title>climatepulse · {latest_date}</title><style>{CSS}</style></head><body>
 <div class="app">
 <nav><div class="logo">climate&nbsp;pulse</div>
 <button class="active" data-t="briefing" onclick="show('briefing')">Briefing</button>

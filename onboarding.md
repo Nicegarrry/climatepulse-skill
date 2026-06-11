@@ -1,4 +1,4 @@
-# climate-digest — onboarding (first run only)
+# climatepulse — onboarding (first run only)
 
 Goal: in one short interactive pass, learn who this digest serves and produce a
 tailored `config/feeds.yaml`, then write `state/profile.md`. Run this only when
@@ -140,5 +140,5 @@ Tell the user setup is done, show the final source count, and explain they can:
   filters so the digest is never empty on a narrow profile — those aren't noise;
   leave them unless you truly never want that outlet,
 - drop quick notes into `state/feedback.md` anytime to steer future runs,
-- schedule a daily run (system cron + `claude -p "/climate-digest"`, a GitHub
+- schedule a daily run (system cron + `claude -p "/climatepulse"`, a GitHub
   Actions schedule, or a Claude Code **Routine** on the web).

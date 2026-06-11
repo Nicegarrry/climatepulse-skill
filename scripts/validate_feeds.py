@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate / discover RSS sources for climate-digest.
+"""Validate / discover RSS sources for climatepulse.
 
 Used in three places:
   • onboarding — test a user-suggested feed (or site) before adding it

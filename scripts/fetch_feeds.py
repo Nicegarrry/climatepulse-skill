@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic RSS collection + dedup for the climate-digest skill.
+"""Deterministic RSS collection + dedup for the climatepulse skill.
 
 Reads the source list (config/feeds.yaml, falling back to feeds.default.yaml),
 fetches each feed, drops anything already in state/seen.json or older than the
